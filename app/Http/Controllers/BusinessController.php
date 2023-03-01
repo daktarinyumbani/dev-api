@@ -54,7 +54,7 @@ class BusinessController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 "name" => "required|min:3",
-                "type" => "in:pharmacy,insurance",
+                "business_type" => "required",
                 "phone" => "required",
                 "address" => "required",
                 "latitude" => "required",
@@ -66,7 +66,7 @@ class BusinessController extends Controller
                 return $this->returnJsonResponse(false, 'Validation failed.', ["errors" => $validator->errors()->toJson()]);
             }
 
-            if(Business::create($request->all())) {
+            if(Business::create(array_merge($request->all(),['type' => $request->business_type]))) {
                 return $this->returnJsonResponse(true, 'Success', []);
             } else {
                 return $this->returnJsonResponse(false, "Something went wrong", []);
@@ -127,7 +127,7 @@ class BusinessController extends Controller
 
             $business = Business::findOrFail($id);
 
-            if($business->update($request->all())) {
+            if($business->update(array_merge($request->all(),['type' => $request->business_type]))) {
                 return $this->returnJsonResponse(true, 'Success', []);
             } else {
                 return $this->returnJsonResponse(false, "Something went wrong", []);

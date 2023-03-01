@@ -5,18 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Generic extends Model
+class UserDeliveryAddress extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'user_id',
+        'phone',
+        'address',
+        'status'
     ];
-
-    public function brands()
-
-    {
-        $this->hasMnay(Brand::class);
-    }
-
 }

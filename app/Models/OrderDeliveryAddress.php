@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Generic extends Model
+class OrderDeliveryAddress extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'order_id',
+        'user_delivery_address_id',
+        'delivery_method_id',
+        'delivery_instruction',
+        'day'
     ];
-
-    public function brands()
-
-    {
-        $this->hasMnay(Brand::class);
-    }
-
 }

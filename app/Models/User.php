@@ -64,4 +64,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Models\Business');
     }
+
+    public function delivery_address()
+    {
+       return $this->hasMany(UserDeliveryAddress::class);
+    }
 }

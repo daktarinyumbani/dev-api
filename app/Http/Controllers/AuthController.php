@@ -52,6 +52,7 @@ class AuthController extends Controller
                          'type'=>$business_type,
                          'phone'=>$request->phone,
                          'doc_url'=>$request->doc_url,
+                         'doc_type'=>$request->doc_type,
                          'active'=>0,
                          'business_type'=>$business_type,
                          'user_id'=>$user->id
@@ -132,7 +133,7 @@ class AuthController extends Controller
             ], 401);
         } else {
             if (Auth::attempt(['phone' => request('phone'), 'password' => request('password')])) {
-                $user = User::with('roles', 'serviceProvider.specialty', 'ambulance','business')->find(Auth::id());
+                $user = User::with('roles', 'serviceProvider.specialty', 'ambulance','business','delivery_address')->find(Auth::id());
                 $token =  $user->createToken($user->id)->plainTextToken;
                 return response()->json([
                     'status' => true,

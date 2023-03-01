@@ -17,6 +17,9 @@ use \App\Http\Controllers\ReportsController;
 use \App\Http\Controllers\WholesalerController;
 use \App\Http\Controllers\RetailerController;
 use \App\Http\Controllers\ProductController;
+use \App\Http\Controllers\OrderController;
+use \App\Http\Controllers\GenericController;
+use \App\Http\Controllers\BrandController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +66,21 @@ Route::group(['prefix' => 'v1'], function () {
         });
 
         Route::group(['prefix' => 'products'], function () {
-        Route::get('shop_products/{id}',[ProductController::class,'get_business_products']);
+        
+        Route::get('shop_products/{business_id}',[ProductController::class,'get_business_products']);
+        Route::post('shop_products/{business_id}',[ProductController::class,'business_create_product']);
+        Route::post('shop_products/{business_id}/{business_product_id}',[ProductController::class,'business_update_product']);
+        Route::delete('shop_products/{business_id}/{business_product_id}',[ProductController::class,'business_delete_product']);
+        Route::get('business_most_requested_products/{business_id}',[ProductController::class,'business_most_requested_products']);
+        Route::get('business_out_of_stock_products/{business_id}',[ProductController::class,'business_out_of_stock_products']);
+        });
+    
+       
+        Route::group(['prefix' => 'orders'], function () {
+            Route::get('/',[OrderController::class,'orders']);
+            Route::post('/order_actions/{order_id}',[OrderController::class,'order_actions']); 
+            Route::post('/place_order/{user_id}',[OrderController::class,'place_order']); 
+
         });
 
         Route::post('file-upload', [UserController::class, 'fileUpload']);
@@ -129,6 +146,11 @@ Route::group(['prefix' => 'v1'], function () {
             Route::resource('businesses', BusinessController::class);
             Route::get('service-requests/all', [ServiceRequestController::class, 'all']);
             Route::resource('service-requests', ServiceRequestController::class);
+            Route::resource('generics', GenericController::class);
+            Route::resource('brands', BrandController::class);
+            Route::get('products',[ProductController::class,'index']);
+            Route::post('products',[ProductController::class,'store']);
+            Route::put('products/{id}',[ProductController::class,'update']);
 
         });
     });

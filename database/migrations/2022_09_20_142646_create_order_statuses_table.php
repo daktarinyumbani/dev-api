@@ -16,8 +16,8 @@ class CreateOrderStatusesTable extends Migration
         Schema::create('order_statuses', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');//one who perfomed the order
-            $table->integer('order_id');
-            $table->string('status')->nullable();
+            $table->integer('order_id'); 
+            $table->string('status')->nullable();//New order,Accepted,Rejected,Pending,Cancelled, Released,Delivered,Fullfied
             $table->string('flag');
             $table->timestamps();
         });
