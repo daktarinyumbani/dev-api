@@ -20,6 +20,7 @@ class Business extends Model
         'active',
         'user_id',
         'business_type',
-        'doc_url'
+        'doc_url',
+        'doc_type'
     ];
 }

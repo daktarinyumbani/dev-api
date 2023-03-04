@@ -90,10 +90,37 @@ class ProductController extends Controller
     }
 
 
+    public function show($id)
+    
+    {
+
+        try{
+
+        $product=Product::with('brand','images')->findorfail($id);
+          $generic=$product->brand->generic;
+
+          $product['generic']=$generic;
+        
+        $data = [
+         'product' => $product
+     ];
+
+         return $this->returnJsonResponse(true, 'Success', $data);
+
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
+            return $this->returnJsonResponse(false, $exception->getMessage(), []);
+        }
+     
+    }
+
+
     public function update(Request $request, $id)
     
     {
         try {
+
+      
 
             $product=Product::findorfail($id);
             $brand= $product->brand; 
@@ -103,12 +130,12 @@ class ProductController extends Controller
            'name'=>$request->name
             ]);
             $brand->product->images->each->delete();
-            foreach($request->images as $img_url){
+          
                 $productImages=ProductImage::create([
-                    'product_id'=>$brand->product->id,
-                    'img_url'=>$img_url
+                    'product_id'=>$product->id,
+                    'img_url'=>$request->images
                  ]); 
-            }
+         
 
             return $this->returnJsonResponse(true, 'Success', $product);
         } catch (\Exception $exception) {
@@ -257,8 +284,11 @@ class ProductController extends Controller
            
         try {
 
-            $business = Business::findorfail($business_id);
+
+          
             $business_product=BusinessProduct::findorfail($business_product_id);
+
+            $business = Business::findorfail($business_product->business->id);
 
             $business_product->update([
 
@@ -272,7 +302,7 @@ class ProductController extends Controller
             ->join('businesses','businesses.id','=','business_products.business_id')
             ->join('brands','brands.id','=','products.brand_id')
             ->selectRaw('products.id as product_id,businesses.id as business_id, sum(remaining_qty) as available_qty, brands.name as product,selling_price,buying_price,businesses.name as business')
-            ->where('business_id',$business->id)
+            ->where('business_id',$business_product->product_id)
             ->groupBy('products.id')
             ->get()->first();
 

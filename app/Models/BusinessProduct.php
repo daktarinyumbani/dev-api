@@ -10,7 +10,6 @@ class BusinessProduct extends Model
     use HasFactory;
 
     protected $fillable= [
-        
         'business_id',
         'product_id',
         'qty',
@@ -21,6 +20,19 @@ class BusinessProduct extends Model
         'buying_price',
         'selling_price',
     ];
+
+
+    public function business()
+    
+    {
+        return $this->belongsTo(Business::class);
+    }
+
+    public function product()
+    
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
 
 

@@ -150,7 +150,8 @@ Route::group(['prefix' => 'v1'], function () {
             Route::resource('brands', BrandController::class);
             Route::get('products',[ProductController::class,'index']);
             Route::post('products',[ProductController::class,'store']);
-            Route::put('products/{id}',[ProductController::class,'update']);
+            Route::get('products/{id}',[ProductController::class,'show']);
+            Route::post('products/{id}',[ProductController::class,'update']);
 
         });
     });

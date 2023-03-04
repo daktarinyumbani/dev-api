@@ -42,10 +42,13 @@ class AuthController extends Controller
             } else {
                 $user = $this->getOrCreateUser($request->all(), true);
 
-                if ($user) {
-               
+              
 
+
+                if ($user) {
+                
                     $business_type=$request->account;
+                    if(!empty($business_type)){
                      if($business_type !='patient'){
                         Business::create([
                          'name'=>strtoupper($request->business_name),
@@ -58,6 +61,8 @@ class AuthController extends Controller
                          'user_id'=>$user->id
                         ]);
                      }
+                     
+                    }
 
                      return response()->json([
                         'status' => true,
